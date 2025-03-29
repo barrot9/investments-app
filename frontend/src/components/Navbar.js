@@ -21,20 +21,24 @@ const Navbar = () => {
         color: "white",
       }}
     >
-      {/* ✅ App title */}
+      {/* App title */}
       <div>
         <Link to="/dashboard" style={{ color: "white", textDecoration: "none", fontWeight: "bold" }}>
           🛍️ MyApp
         </Link>
       </div>
 
-      {/* ✅ Navigation links & user actions */}
+      {/* Navigation actions */}
       <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
         {user && (
           <>
-            {/* ✅ NEW Home link */}
             <Link to="/home" style={{ color: "white", textDecoration: "none" }}>
               Home
+            </Link>
+
+            {/* ✅ New Create Listing link */}
+            <Link to="/create" style={{ color: "white", textDecoration: "none" }}>
+              + Create Listing
             </Link>
 
             <span>{user.email}</span>

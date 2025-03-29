@@ -4,6 +4,10 @@ import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import DashboardPage from "./pages/DashboardPage";
 import RegisterPage from "./pages/RegisterPage";
+import CreateListingPage from "./pages/CreateListingPage";
+import ListingDetailPage from "./pages/ListingDetailPage";
+import EditListingPage from "./pages/EditListingPage";
+import MessagesPage from "./pages/MessagesPage";
 
 const AppRoutes = () => {
   return (
@@ -27,6 +31,38 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/create"
+        element={
+          <ProtectedRoute>
+            <CreateListingPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/listing/:id"
+        element={
+          <ProtectedRoute>
+            <ListingDetailPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/listing/:id/edit"
+        element={
+          <ProtectedRoute>
+            <EditListingPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/messages/:userId"
+        element={
+          <ProtectedRoute>
+            <MessagesPage />
           </ProtectedRoute>
         }
       />
