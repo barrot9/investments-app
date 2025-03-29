@@ -8,6 +8,7 @@ import CreateListingPage from "./pages/CreateListingPage";
 import ListingDetailPage from "./pages/ListingDetailPage";
 import EditListingPage from "./pages/EditListingPage";
 import MessagesPage from "./pages/MessagesPage";
+import InboxPage from "./pages/InboxPage";
 
 const AppRoutes = () => {
   return (
@@ -66,6 +67,14 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+      <Route
+      path="/inbox"
+      element={
+        <ProtectedRoute>
+          <InboxPage />
+        </ProtectedRoute>
+      }
+    />
     </Routes>
   );
 };

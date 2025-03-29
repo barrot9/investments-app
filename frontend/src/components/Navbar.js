@@ -14,6 +14,7 @@ const Navbar = () => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
+        flexWrap: "wrap",
       }}
     >
       <div>
@@ -25,7 +26,7 @@ const Navbar = () => {
         </Link>
         {user && (
           <>
-            <Link to={`/messages/${user.id}`} style={linkStyle}>
+            <Link to="/inbox" style={linkStyle}>
               💬 My Messages
             </Link>
             <Link to="/dashboard" style={linkStyle}>
@@ -36,9 +37,12 @@ const Navbar = () => {
       </div>
 
       {user && (
-        <button onClick={logoutUser} style={logoutButtonStyle}>
-          🔓 Logout
-        </button>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <span style={{ fontSize: "0.9rem", color: "#ddd" }}>{user.email}</span>
+          <button onClick={logoutUser} style={logoutButtonStyle}>
+            🔓 Logout
+          </button>
+        </div>
       )}
     </nav>
   );

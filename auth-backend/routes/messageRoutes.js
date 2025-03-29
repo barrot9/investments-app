@@ -63,4 +63,37 @@ router.get("/:userId", verifyToken, async (req, res) => {
   }
 });
 
+// ✅ GET /api/messages - Get unique conversation partners for the logged-in user
+router.get("/", verifyToken, async (req, res) => {
+    const userId = req.user.id;
+  
+    try {
+      const result = await pool.query(
+        `
+        SELECT DISTINCT ON (u.id) 
+          u.id AS user_id, u.username, u.email,
+          m.content AS last_message,
+          m.created_at
+        FROM (
+          SELECT * FROM messages 
+          WHERE sender_id = $1 OR recipient_id = $1
+          ORDER BY created_at DESC
+        ) m
+        JOIN users u 
+          ON u.id = CASE 
+            WHEN m.sender_id = $1 THEN m.recipient_id 
+            ELSE m.sender_id 
+          END
+        ORDER BY u.id, m.created_at DESC
+        `,
+        [userId]
+      );
+  
+      res.json(result.rows);
+    } catch (err) {
+      console.error("❌ Error fetching inbox:", err);
+      res.status(500).json({ message: "Server error" });
+    }
+  });
+  
 module.exports = router;

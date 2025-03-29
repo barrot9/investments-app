@@ -10,6 +10,7 @@ const MessagesPage = () => {
 
   const [messages, setMessages] = useState([]);
   const [content, setContent] = useState("");
+  const [recipient, setRecipient] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -26,13 +27,25 @@ const MessagesPage = () => {
       }
     };
 
+    const fetchRecipient = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/api/auth/users/${userId}`);
+        console.log("📦 recipient info:", res.data);
+        setRecipient(res.data);
+      } catch (err) {
+        console.error("Error fetching recipient info:", err);
+      }
+    };
+
     fetchMessages();
+    fetchRecipient();
   }, [userId]);
 
   const handleSend = async (e) => {
     e.preventDefault();
     if (!content.trim()) return;
-    console.log("📤 Sending message:", content); //  Add this line
+    console.log("📤 Sending message:", content);
+
     try {
       await axios.post(
         `http://localhost:5000/api/messages`,
@@ -68,32 +81,44 @@ const MessagesPage = () => {
             backgroundColor: "#f9f9f9",
           }}
         >
-          {messages.map((msg) => (
-            <div
-              key={msg.id}
-              style={{
-                textAlign: msg.sender_id === user.id ? "right" : "left",
-                marginBottom: "1rem",
-              }}
-            >
+          {messages.map((msg) => {
+            const isSentByMe = msg.sender_id === user.id;
+
+            return (
               <div
+                key={msg.id}
                 style={{
-                  display: "inline-block",
-                  padding: "0.5rem 1rem",
-                  backgroundColor: msg.sender_id === user.id ? "#d1e7dd" : "#e2e3e5",
-                  borderRadius: "10px",
+                  textAlign: isSentByMe ? "right" : "left",
+                  marginBottom: "1rem",
                 }}
               >
-                {msg.content}
+                <div
+                  style={{
+                    display: "inline-block",
+                    padding: "0.5rem 1rem",
+                    backgroundColor: isSentByMe ? "#d1e7dd" : "#e2e3e5",
+                    color: "#111",
+                    borderRadius: "10px",
+                    maxWidth: "75%",
+                  }}
+                >
+                  <div style={{ fontSize: "0.75rem", fontWeight: "bold", marginBottom: "0.25rem" }}>
+                  {isSentByMe ? "You" : (recipient?.username || "Them")}
+                  </div>
+                  <div>{msg.content}</div>
+                  <div style={{ fontSize: "0.7rem", color: "#555", marginTop: "0.25rem" }}>
+                    {new Date(msg.created_at).toLocaleTimeString()}
+                  </div>
+                </div>
               </div>
-              <div style={{ fontSize: "0.7rem", color: "#666" }}>
-                {new Date(msg.created_at).toLocaleTimeString()}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
-        <form onSubmit={handleSend} style={{ marginTop: "1rem", display: "flex", gap: "0.5rem" }}>
+        <form
+          onSubmit={handleSend}
+          style={{ marginTop: "1rem", display: "flex", gap: "0.5rem" }}
+        >
           <input
             type="text"
             value={content}
