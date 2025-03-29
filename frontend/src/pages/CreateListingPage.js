@@ -1,10 +1,10 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import Navbar from "../components/Navbar";
-import axios from "axios";
+//import axios from "axios";
 
 const CreateListingPage = () => {
-  const { user } = useContext(AuthContext);
+  useContext(AuthContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -14,11 +14,11 @@ const CreateListingPage = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/listings",
-        { title, description, price },
-        { withCredentials: true }
-      );
+    //   const res = await axios.post(
+    //     "http://localhost:5000/api/listings",
+    //     { title, description, price },
+    //     { withCredentials: true }
+    //   );
 
       setMessage("✅ Listing created successfully!");
       setTitle("");
@@ -40,14 +40,17 @@ const CreateListingPage = () => {
         {message && <p>{message}</p>}
 
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <input
-            type="text"
-            placeholder="Title"
+        <select
             value={title}
-            required
             onChange={(e) => setTitle(e.target.value)}
+            required
             style={{ padding: "0.5rem" }}
-          />
+            >
+            <option value="">Select a title</option>
+            <option value="בקשה להלוואה">בקשה להלוואה</option>
+            <option value="רוצה להלוות">רוצה להלוות</option>
+        </select>
+
           <textarea
             placeholder="Description"
             value={description}
