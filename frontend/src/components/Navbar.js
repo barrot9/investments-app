@@ -1,66 +1,62 @@
 import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 
 const Navbar = () => {
   const { user, logoutUser } = useContext(AuthContext);
-  const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    await logoutUser();
-    navigate("/login");
-  };
 
   return (
     <nav
       style={{
+        backgroundColor: "#1f2937",
+        color: "white",
+        padding: "1rem",
         display: "flex",
         justifyContent: "space-between",
-        padding: "1rem 2rem",
-        backgroundColor: "#282c34",
-        color: "white",
+        alignItems: "center",
       }}
     >
-      {/* App title */}
       <div>
-        <Link to="/dashboard" style={{ color: "white", textDecoration: "none", fontWeight: "bold" }}>
-          🛍️ MyApp
+        <Link to="/home" style={linkStyle}>
+          🏠 Home
         </Link>
-      </div>
-
-      {/* Navigation actions */}
-      <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+        <Link to="/create" style={linkStyle}>
+          ➕ Create Listing
+        </Link>
         {user && (
           <>
-            <Link to="/home" style={{ color: "white", textDecoration: "none" }}>
-              Home
+            <Link to={`/messages/${user.id}`} style={linkStyle}>
+              💬 My Messages
             </Link>
-
-            {/* ✅ New Create Listing link */}
-            <Link to="/create" style={{ color: "white", textDecoration: "none" }}>
-              + Create Listing
+            <Link to="/dashboard" style={linkStyle}>
+              📊 Dashboard
             </Link>
-
-            <span>{user.email}</span>
-
-            <button
-              onClick={handleLogout}
-              style={{
-                backgroundColor: "#ff4d4d",
-                color: "white",
-                border: "none",
-                padding: "0.5rem 1rem",
-                cursor: "pointer",
-                borderRadius: "4px",
-              }}
-            >
-              Logout
-            </button>
           </>
         )}
       </div>
+
+      {user && (
+        <button onClick={logoutUser} style={logoutButtonStyle}>
+          🔓 Logout
+        </button>
+      )}
     </nav>
   );
+};
+
+const linkStyle = {
+  color: "white",
+  textDecoration: "none",
+  marginRight: "1rem",
+};
+
+const logoutButtonStyle = {
+  backgroundColor: "#ef4444",
+  color: "white",
+  border: "none",
+  padding: "0.5rem 1rem",
+  cursor: "pointer",
+  borderRadius: "4px",
 };
 
 export default Navbar;

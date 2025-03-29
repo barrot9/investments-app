@@ -12,27 +12,27 @@ const MessagesPage = () => {
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const fetchMessages = async () => {
-    try {
-      const res = await axios.get(`http://localhost:5000/api/messages/${userId}`, {
-        withCredentials: true,
-      });
-      setMessages(res.data);
-    } catch (err) {
-      console.error("Error fetching messages:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/api/messages/${userId}`, {
+          withCredentials: true,
+        });
+        setMessages(res.data);
+      } catch (err) {
+        console.error("Error fetching messages:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchMessages();
   }, [userId]);
 
   const handleSend = async (e) => {
     e.preventDefault();
     if (!content.trim()) return;
-
+    console.log("📤 Sending message:", content); //  Add this line
     try {
       await axios.post(
         `http://localhost:5000/api/messages`,
@@ -40,7 +40,12 @@ const MessagesPage = () => {
         { withCredentials: true }
       );
       setContent("");
-      fetchMessages(); // refresh messages
+
+      // Refresh after send
+      const res = await axios.get(`http://localhost:5000/api/messages/${userId}`, {
+        withCredentials: true,
+      });
+      setMessages(res.data);
     } catch (err) {
       console.error("Error sending message:", err);
     }

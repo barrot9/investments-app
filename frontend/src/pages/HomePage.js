@@ -4,7 +4,6 @@ import Navbar from "../components/Navbar";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-
 const HomePage = () => {
   const { user, loading } = useContext(AuthContext);
   const [listings, setListings] = useState([]);
@@ -57,22 +56,22 @@ const HomePage = () => {
               <p>No listings yet</p>
             ) : (
               listings.map((item) => (
-                <Link
-                  to={`/listing/${item.id}`}
+                <div
                   key={item.id}
-                  style={{ textDecoration: "none", color: "inherit" }}
+                  style={{
+                    border: "1px solid #ccc",
+                    padding: "1rem",
+                    width: "250px",
+                    borderRadius: "8px",
+                    boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+                    textAlign: "left",
+                    backgroundColor: "#fff",
+                    transition: "transform 0.2s",
+                  }}
                 >
-                  <div
-                    style={{
-                      border: "1px solid #ccc",
-                      padding: "1rem",
-                      width: "250px",
-                      borderRadius: "8px",
-                      boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-                      textAlign: "left",
-                      backgroundColor: "#fff",
-                      transition: "transform 0.2s",
-                    }}
+                  <Link
+                    to={`/listing/${item.id}`}
+                    style={{ textDecoration: "none", color: "inherit" }}
                   >
                     <h4>{item.title}</h4>
                     <p style={{ margin: "0.5rem 0" }}>{item.description}</p>
@@ -80,8 +79,27 @@ const HomePage = () => {
                     <p style={{ fontSize: "0.85rem", color: "#666" }}>
                       Seller: {item.email}
                     </p>
-                  </div>
-                </Link>
+                  </Link>
+
+                  {item.user_id !== user.id && (
+                    <Link to={`/messages/${item.user_id}`}>
+                      <button
+                        style={{
+                          marginTop: "0.5rem",
+                          padding: "0.5rem 1rem",
+                          backgroundColor: "#6366f1",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "4px",
+                          cursor: "pointer",
+                          width: "100%",
+                        }}
+                      >
+                        💬 Message Seller
+                      </button>
+                    </Link>
+                  )}
+                </div>
               ))
             )}
           </div>
