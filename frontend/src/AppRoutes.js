@@ -75,6 +75,15 @@ const AppRoutes = () => {
         </ProtectedRoute>
       }
     />
+    <Route
+      path="/profile"
+      element={
+        <ProtectedRoute>
+          <ProfilePage />
+        </ProtectedRoute>
+      }
+    />
+
     </Routes>
   );
 };

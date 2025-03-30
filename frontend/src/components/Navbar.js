@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 
 const Navbar = () => {
@@ -18,20 +18,23 @@ const Navbar = () => {
       }}
     >
       <div>
-        <Link to="/home" style={linkStyle}>
+        <NavLink to="/home" style={navStyle}>
           🏠 Home
-        </Link>
-        <Link to="/create" style={linkStyle}>
+        </NavLink>
+        <NavLink to="/create" style={navStyle}>
           ➕ Create Listing
-        </Link>
+        </NavLink>
         {user && (
           <>
-            <Link to="/inbox" style={linkStyle}>
+            <NavLink to="/inbox" style={navStyle}>
               💬 My Messages
-            </Link>
-            <Link to="/dashboard" style={linkStyle}>
+            </NavLink>
+            <NavLink to="/dashboard" style={navStyle}>
               📊 Dashboard
-            </Link>
+            </NavLink>
+            <NavLink to="/profile" style={navStyle}>
+              👤 My Profile
+            </NavLink>
           </>
         )}
       </div>
@@ -48,11 +51,13 @@ const Navbar = () => {
   );
 };
 
-const linkStyle = {
-  color: "white",
+const navStyle = ({ isActive }) => ({
+  color: isActive ? "#60a5fa" : "white", // blue-400 if active
   textDecoration: "none",
   marginRight: "1rem",
-};
+  fontWeight: isActive ? "bold" : "normal",
+  borderBottom: isActive ? "2px solid #60a5fa" : "none",
+});
 
 const logoutButtonStyle = {
   backgroundColor: "#ef4444",
