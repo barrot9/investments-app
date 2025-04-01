@@ -30,6 +30,9 @@ app.use("/api/listings", listingRoutes);
 //Messages routes
 app.use("/api/messages", messageRoutes);
 
+//Uploads routes
+app.use("/uploads", express.static("uploads")); // To serve uploaded files
+
 // ✅ Test route
 app.get("/", (req, res) => {
   res.send("Auth Backend is Running!");

@@ -39,3 +39,18 @@ export const getUser = async () => {
     return null;
   }
 };
+
+// Allow the update of user data
+export const updateUser = async (id, userData) => {
+  try {
+    const response = await axios.put(
+      `http://localhost:5000/api/auth/users/${id}`,
+      userData,
+      { withCredentials: true }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response?.data?.message || "Failed to update user";
+  }
+};
+
