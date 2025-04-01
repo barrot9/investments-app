@@ -52,12 +52,17 @@ const Navbar = () => {
 };
 
 const navStyle = ({ isActive }) => ({
-  color: isActive ? "#60a5fa" : "white", // blue-400 if active
-  textDecoration: "none",
-  marginRight: "1rem",
-  fontWeight: isActive ? "bold" : "normal",
-  borderBottom: isActive ? "2px solid #60a5fa" : "none",
-});
+    color: isActive ? "#1f2937" : "white",
+    backgroundColor: isActive ? "#e5e7eb" : "transparent", // gray-200 for active
+    textDecoration: "none",
+    marginRight: "1rem",
+    padding: "0.4rem 0.8rem",
+    borderRadius: "6px",
+    border: isActive ? "2px solid #60a5fa" : "2px solid transparent", // blue border if active
+    fontWeight: isActive ? "bold" : "normal",
+    transition: "all 0.2s ease-in-out",
+  });
+  
 
 const logoutButtonStyle = {
   backgroundColor: "#ef4444",
