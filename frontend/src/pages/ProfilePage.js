@@ -72,44 +72,64 @@ const ProfilePage = () => {
         {/* USER INFO */}
         <section style={sectionStyle}>
           <h3>👥 Account Info</h3>
-          {!editMode ? (
-            <>
-              <p><strong>Username:</strong> {user.username}</p>
-              <p><strong>Email:</strong> {user.email}</p>
-              <button onClick={() => setEditMode(true)} style={buttonStyle}>Edit Profile</button>
-            </>
-          ) : (
-            <form onSubmit={handleUpdate} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              <input
-                type="text"
-                value={formData.username}
-                placeholder="Username"
-                onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-              />
-              <input
-                type="email"
-                value={formData.email}
-                placeholder="Email"
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              />
-              <input
-                type="password"
-                value={formData.password}
-                placeholder="New Password (optional)"
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              />
-              <label>
-                Upload Avatar:
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setAvatarFile(e.target.files[0])}
-                />
-              </label>
-              <button type="submit" style={buttonStyle}>Save Changes</button>
-              <button type="button" onClick={() => setEditMode(false)} style={cancelButtonStyle}>Cancel</button>
-            </form>
-          )}
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <img
+            src={
+                user.avatar
+                ? user.avatar.startsWith("http") // absolute URL (for future)
+                    ? user.avatar
+                    : `http://localhost:5000${user.avatar}` // relative path from backend
+                : "/default-avatar.jpg"
+            }
+            alt="Avatar"
+            style={{
+                width: "80px",
+                height: "80px",
+                borderRadius: "50%",
+                objectFit: "cover",
+            }}
+            />
+            <div>
+                {!editMode ? (
+                    <>
+                    <p><strong>Username:</strong> {user.username}</p>
+                    <p><strong>Email:</strong> {user.email}</p>
+                    <button onClick={() => setEditMode(true)} style={buttonStyle}>Edit Profile</button>
+                    </>
+                ) : (
+                    <form onSubmit={handleUpdate} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                    <input
+                        type="text"
+                        value={formData.username}
+                        placeholder="Username"
+                        onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                    />
+                    <input
+                        type="email"
+                        value={formData.email}
+                        placeholder="Email"
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    />
+                    <input
+                        type="password"
+                        value={formData.password}
+                        placeholder="New Password (optional)"
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    />
+                    <label>
+                        Upload Avatar:
+                        <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setAvatarFile(e.target.files[0])}
+                        />
+                    </label>
+                    <button type="submit" style={buttonStyle}>Save Changes</button>
+                    <button type="button" onClick={() => setEditMode(false)} style={cancelButtonStyle}>Cancel</button>
+                    </form>
+                )}
+            </div>
+          </div>
         </section>
 
         {/* MY LISTINGS */}

@@ -55,52 +55,64 @@ const HomePage = () => {
             {listings.length === 0 ? (
               <p>No listings yet</p>
             ) : (
-              listings.map((item) => (
-                <div
-                  key={item.id}
-                  style={{
-                    border: "1px solid #ccc",
-                    padding: "1rem",
-                    width: "250px",
-                    borderRadius: "8px",
-                    boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-                    textAlign: "left",
-                    backgroundColor: "#fff",
-                    transition: "transform 0.2s",
-                  }}
-                >
-                  <Link
-                    to={`/listing/${item.id}`}
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    <h4>{item.title}</h4>
-                    <p style={{ margin: "0.5rem 0" }}>{item.description}</p>
-                    <p style={{ fontWeight: "bold" }}>{item.price}</p>
-                    <p style={{ fontSize: "0.85rem", color: "#666" }}>
-                      Seller: {item.email}
-                    </p>
-                  </Link>
+              listings.map((item) => {
+                console.log("Listing avatar:", item.avatar);
+                const avatarUrl = item.avatar
+                  ? `http://localhost:5000${item.avatar.startsWith("/uploads/") ? item.avatar : `/uploads/${item.avatar}`}`
+                  : "/default-avatar.jpg";
 
-                  {item.user_id !== user.id && (
-                    <Link to={`/messages/${item.user_id}`}>
-                      <button
-                        style={{
-                          marginTop: "0.5rem",
-                          padding: "0.5rem 1rem",
-                          backgroundColor: "#6366f1",
-                          color: "white",
-                          border: "none",
-                          borderRadius: "4px",
-                          cursor: "pointer",
-                          width: "100%",
-                        }}
-                      >
-                        💬 Message Seller
-                      </button>
+                return (
+                  <div
+                    key={item.id}
+                    style={{
+                      border: "1px solid #ccc",
+                      padding: "1rem",
+                      width: "250px",
+                      borderRadius: "8px",
+                      boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+                      textAlign: "left",
+                      backgroundColor: "#fff",
+                      transition: "transform 0.2s",
+                    }}
+                  >
+                    <Link
+                      to={`/listing/${item.id}`}
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      <h4>{item.title}</h4>
+                      <p style={{ margin: "0.5rem 0" }}>{item.description}</p>
+                      <p style={{ fontWeight: "bold" }}>{item.price}</p>
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "0.5rem" }}>
+                        <img
+                          src={avatarUrl}
+                          alt="Seller Avatar"
+                          style={{ width: "30px", height: "30px", borderRadius: "50%" }}
+                        />
+                        <span style={{ fontSize: "0.85rem", color: "#666" }}>{item.email}</span>
+                      </div>
                     </Link>
-                  )}
-                </div>
-              ))
+
+                    {item.user_id !== user.id && (
+                      <Link to={`/messages/${item.user_id}`}>
+                        <button
+                          style={{
+                            marginTop: "0.5rem",
+                            padding: "0.5rem 1rem",
+                            backgroundColor: "#6366f1",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                            width: "100%",
+                          }}
+                        >
+                          💬 Message Seller
+                        </button>
+                      </Link>
+                    )}
+                  </div>
+                );
+              })
             )}
           </div>
         </div>

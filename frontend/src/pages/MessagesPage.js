@@ -6,12 +6,14 @@ import { AuthContext } from "../contexts/AuthContext";
 
 const MessagesPage = () => {
   const { user } = useContext(AuthContext);
-  const { userId } = useParams(); // The user we're chatting with
+  const { userId } = useParams();
 
   const [messages, setMessages] = useState([]);
   const [content, setContent] = useState("");
   const [recipient, setRecipient] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const defaultAvatar = "/default-avatar.jpg";
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -29,8 +31,7 @@ const MessagesPage = () => {
 
     const fetchRecipient = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/auth/users/${userId}`);
-        console.log("📦 recipient info:", res.data);
+        const res = await axios.get(`http://localhost:5000/api/users/${userId}`);
         setRecipient(res.data);
       } catch (err) {
         console.error("Error fetching recipient info:", err);
@@ -44,7 +45,6 @@ const MessagesPage = () => {
   const handleSend = async (e) => {
     e.preventDefault();
     if (!content.trim()) return;
-    console.log("📤 Sending message:", content);
 
     try {
       await axios.post(
@@ -54,7 +54,6 @@ const MessagesPage = () => {
       );
       setContent("");
 
-      // Refresh after send
       const res = await axios.get(`http://localhost:5000/api/messages/${userId}`, {
         withCredentials: true,
       });
@@ -70,7 +69,7 @@ const MessagesPage = () => {
     <div>
       <Navbar />
       <div style={{ maxWidth: "600px", margin: "2rem auto" }}>
-        <h2>Messages</h2>
+        <h2>Conversation with {recipient?.username || "User"}</h2>
 
         <div
           style={{
@@ -82,34 +81,67 @@ const MessagesPage = () => {
           }}
         >
           {messages.map((msg) => {
-            const isSentByMe = msg.sender_id === user.id;
+            const isMe = msg.sender_id === user.id;
+            const avatarPath = isMe ? user.avatar : recipient?.avatar;
+            const avatarUrl = avatarPath ? `http://localhost:5000${avatarPath}` : defaultAvatar;
+            const name = isMe ? "You" : recipient?.username || "User";
 
             return (
               <div
                 key={msg.id}
                 style={{
-                  textAlign: isSentByMe ? "right" : "left",
+                  display: "flex",
+                  justifyContent: isMe ? "flex-end" : "flex-start",
                   marginBottom: "1rem",
                 }}
               >
+                {!isMe && (
+                  <img
+                    src={avatarUrl}
+                    alt="Avatar"
+                    style={{
+                      width: "32px",
+                      height: "32px",
+                      borderRadius: "50%",
+                      marginRight: "0.5rem",
+                    }}
+                  />
+                )}
                 <div
                   style={{
-                    display: "inline-block",
+                    backgroundColor: isMe ? "#d1e7dd" : "#e2e3e5",
                     padding: "0.5rem 1rem",
-                    backgroundColor: isSentByMe ? "#d1e7dd" : "#e2e3e5",
-                    color: "#111",
                     borderRadius: "10px",
-                    maxWidth: "75%",
+                    maxWidth: "70%",
+                    textAlign: "left",
                   }}
                 >
-                  <div style={{ fontSize: "0.75rem", fontWeight: "bold", marginBottom: "0.25rem" }}>
-                  {isSentByMe ? "You" : (recipient?.username || "Them")}
+                  <div
+                    style={{
+                      fontSize: "0.75rem",
+                      fontWeight: "bold",
+                      marginBottom: "0.25rem",
+                    }}
+                  >
+                    {name}
                   </div>
                   <div>{msg.content}</div>
                   <div style={{ fontSize: "0.7rem", color: "#555", marginTop: "0.25rem" }}>
                     {new Date(msg.created_at).toLocaleTimeString()}
                   </div>
                 </div>
+                {isMe && (
+                  <img
+                    src={avatarUrl}
+                    alt="Avatar"
+                    style={{
+                      width: "32px",
+                      height: "32px",
+                      borderRadius: "50%",
+                      marginLeft: "0.5rem",
+                    }}
+                  />
+                )}
               </div>
             );
           })}

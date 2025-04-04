@@ -44,24 +44,34 @@ router.post("/", verifyToken, async (req, res) => {
 
 // ✅ GET /api/messages/:userId — Get conversation
 router.get("/:userId", verifyToken, async (req, res) => {
-  const userId = parseInt(req.params.userId);
-  const currentUserId = req.user.id;
-
-  try {
-    const result = await pool.query(
-      `SELECT * FROM messages 
-       WHERE (sender_id = $1 AND recipient_id = $2)
-          OR (sender_id = $2 AND recipient_id = $1)
-       ORDER BY created_at ASC`,
-      [currentUserId, userId]
-    );
-
-    res.json(result.rows);
-  } catch (err) {
-    console.error("❌ Error fetching messages:", err);
-    res.status(500).json({ message: "Server error" });
-  }
-});
+    const userId = parseInt(req.params.userId);
+    const currentUserId = req.user.id;
+  
+    try {
+      const result = await pool.query(
+        `
+        SELECT 
+          m.*, 
+          s.username AS sender_name, 
+          s.avatar AS sender_avatar,
+          r.username AS recipient_name, 
+          r.avatar AS recipient_avatar
+        FROM messages m
+        JOIN users s ON m.sender_id = s.id
+        JOIN users r ON m.recipient_id = r.id
+        WHERE (m.sender_id = $1 AND m.recipient_id = $2)
+           OR (m.sender_id = $2 AND m.recipient_id = $1)
+        ORDER BY m.created_at ASC
+        `,
+        [currentUserId, userId]
+      );
+  
+      res.json(result.rows);
+    } catch (err) {
+      console.error("❌ Error fetching messages with user info:", err);
+      res.status(500).json({ message: "Server error" });
+    }
+  });
 
 // ✅ GET /api/messages - Get unique conversation partners for the logged-in user
 router.get("/", verifyToken, async (req, res) => {

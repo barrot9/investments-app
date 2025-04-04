@@ -138,12 +138,17 @@ router.post("/logout", (req, res) => {
 router.get("/user", verifyToken, async (req, res) => {
   try {
     const user = await pool.query(
-      "SELECT id, username, email FROM users WHERE id = $1",
+      "SELECT id, username, email, avatar  FROM users WHERE id = $1",
       [req.user.id]
     );
 
     if (user.rows.length === 0) {
       return res.status(404).json({ message: "User not found" });
+    }
+
+    const u = user.rows[0];
+    if (u.avatar) {
+      u.avatar = `/uploads/${u.avatar}`;
     }
 
     res.json(user.rows[0]);

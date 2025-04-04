@@ -52,7 +52,7 @@ router.post("/", verifyToken, async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const result = await pool.query(
-      `SELECT listings.*, users.username, users.email 
+      `SELECT listings.*, users.username, users.email, users.avatar 
        FROM listings
        JOIN users ON listings.user_id = users.id
        ORDER BY listings.created_at DESC`
@@ -71,7 +71,7 @@ router.get("/:id", async (req, res) => {
 
   try {
     const result = await pool.query(
-      `SELECT listings.*, users.username, users.email 
+      `SELECT listings.*, users.username, users.email, users.avatar
        FROM listings
        JOIN users ON listings.user_id = users.id
        WHERE listings.id = $1`,

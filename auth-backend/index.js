@@ -3,6 +3,7 @@ const { Pool } = require("pg");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const path = require("path");
 const authRoutes = require("./routes/authRoutes");
 const listingRoutes = require("./routes/listingRoutes");
 const messageRoutes = require("./routes/messageRoutes");
@@ -23,12 +24,14 @@ app.use(express.json());
 // ✅ Auth routes
 app.use("/api/auth", authRoutes);
 
-
 //listings routes
 app.use("/api/listings", listingRoutes);
 
 //Messages routes
 app.use("/api/messages", messageRoutes);
+
+// Serve the uploads folder
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 //Uploads routes
 app.use("/uploads", express.static("uploads")); // To serve uploaded files

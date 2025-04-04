@@ -41,6 +41,16 @@ const Navbar = () => {
 
       {user && (
         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            <img
+            src={user?.avatar ? `http://localhost:5000${user.avatar}` : "/default-avatar.jpg"}
+            alt="avatar"
+            style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                objectFit: "cover",
+            }}
+            />
           <span style={{ fontSize: "0.9rem", color: "#ddd" }}>{user.email}</span>
           <button onClick={logoutUser} style={logoutButtonStyle}>
             🔓 Logout
