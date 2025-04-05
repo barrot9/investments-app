@@ -8,6 +8,9 @@ const Navbar = () => {
   return (
     <nav
       style={{
+        position: "sticky",     //  Makes it sticky
+        top: 0,                 //  Sticks to the top
+        zIndex: 1000,           //  Ensures it stays on top of other content
         backgroundColor: "#1f2937",
         color: "white",
         padding: "1rem",

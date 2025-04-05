@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Oval } from "react-loader-spinner";
+import Footer from "../components/Footer";
 
 const ProfilePage = () => {
   const { user, refreshUser } = useContext(AuthContext);
@@ -181,6 +182,7 @@ const ProfilePage = () => {
           )}
         </section>
       </div>
+      <Footer />
     </div>
   );
 };

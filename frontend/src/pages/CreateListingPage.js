@@ -1,6 +1,5 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import Navbar from "../components/Navbar";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { TailSpin } from "react-loader-spinner";
@@ -37,8 +36,7 @@ const CreateListingPage = () => {
   };
 
   return (
-    <div>
-      <Navbar />
+    <>
       <ToastContainer position="top-right" autoClose={3000} />
 
       <div style={{ maxWidth: "600px", margin: "2rem auto", padding: "1rem" }}>
@@ -90,7 +88,7 @@ const CreateListingPage = () => {
           </button>
         </form>
       </div>
-    </div>
+    </>
   );
 };
 

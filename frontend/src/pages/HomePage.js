@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import Navbar from "../components/Navbar";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
@@ -31,6 +30,7 @@ const HomePage = () => {
   if (loading || fetching) {
     return (
       <div style={{ textAlign: "center", marginTop: "4rem" }}>
+        <ToastContainer position="top-right" autoClose={3000} />
         <Oval height={40} width={40} color="#2563eb" />
         <p>Loading...</p>
       </div>
@@ -39,9 +39,7 @@ const HomePage = () => {
 
   return (
     <div>
-      <Navbar />
       <ToastContainer position="top-right" autoClose={3000} />
-
       <div
         style={{
           maxWidth: "1000px",

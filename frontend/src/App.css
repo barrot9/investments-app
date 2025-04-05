@@ -36,3 +36,32 @@
     transform: rotate(360deg);
   }
 }
+
+/* Ensure html and body take full height */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Flex container that grows */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Push footer to bottom */
+.content-wrap {
+  flex: 1;
+}
+
+
+  .footer {
+    padding: 1rem;
+    text-align: center;
+    background-color: #1f2937;
+    color: white;
+    border-top: 1px solid #ccc;
+    margin-top: auto; /* ✅ This pushes the footer to the bottom */
+  }  

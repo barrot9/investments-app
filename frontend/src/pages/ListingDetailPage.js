@@ -6,6 +6,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import { TailSpin } from "react-loader-spinner";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Footer from "../components/Footer";
 
 const ListingDetailPage = () => {
   const { id } = useParams();
@@ -95,6 +96,7 @@ const ListingDetailPage = () => {
           <p>Listing not found.</p>
         )}
       </div>
+      <Footer />
     </div>
   );
 };

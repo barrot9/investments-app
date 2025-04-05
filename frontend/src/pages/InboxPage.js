@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Oval } from "react-loader-spinner";
+import Footer from "../components/Footer";
 
 const InboxPage = () => {
   useContext(AuthContext);
@@ -89,6 +90,7 @@ const InboxPage = () => {
           })
         )}
       </div>
+      <Footer />
     </div>
   );
 };

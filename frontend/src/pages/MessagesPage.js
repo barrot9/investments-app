@@ -6,6 +6,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { TailSpin } from "react-loader-spinner";
+import Footer from "../components/Footer";
 
 const MessagesPage = () => {
   const { user } = useContext(AuthContext);
@@ -206,6 +207,7 @@ const MessagesPage = () => {
           </>
         )}
       </div>
+      <Footer />
     </div>
   );
 };
