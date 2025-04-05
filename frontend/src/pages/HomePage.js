@@ -3,6 +3,9 @@ import { AuthContext } from "../contexts/AuthContext";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Oval } from "react-loader-spinner";
 
 const HomePage = () => {
   const { user, loading } = useContext(AuthContext);
@@ -16,6 +19,7 @@ const HomePage = () => {
         setListings(response.data);
       } catch (error) {
         console.error("Failed to fetch listings:", error);
+        toast.error("Failed to load listings");
       } finally {
         setFetching(false);
       }
@@ -24,11 +28,19 @@ const HomePage = () => {
     fetchListings();
   }, []);
 
-  if (loading || fetching) return <p>Loading...</p>;
+  if (loading || fetching) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "4rem" }}>
+        <Oval height={40} width={40} color="#2563eb" />
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div>
       <Navbar />
+      <ToastContainer position="top-right" autoClose={3000} />
 
       <div
         style={{
@@ -56,7 +68,6 @@ const HomePage = () => {
               <p>No listings yet</p>
             ) : (
               listings.map((item) => {
-                console.log("Listing avatar:", item.avatar);
                 const avatarUrl = item.avatar
                   ? `http://localhost:5000${item.avatar.startsWith("/uploads/") ? item.avatar : `/uploads/${item.avatar}`}`
                   : "/default-avatar.jpg";
@@ -82,7 +93,14 @@ const HomePage = () => {
                       <h4>{item.title}</h4>
                       <p style={{ margin: "0.5rem 0" }}>{item.description}</p>
                       <p style={{ fontWeight: "bold" }}>{item.price}</p>
-                      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "0.5rem" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.5rem",
+                          marginTop: "0.5rem",
+                        }}
+                      >
                         <img
                           src={avatarUrl}
                           alt="Seller Avatar"

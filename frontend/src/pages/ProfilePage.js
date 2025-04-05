@@ -3,12 +3,16 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import { AuthContext } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Oval } from "react-loader-spinner";
 
 const ProfilePage = () => {
   const { user, refreshUser } = useContext(AuthContext);
   const [listings, setListings] = useState([]);
   const [conversations, setConversations] = useState([]);
   const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -35,6 +39,7 @@ const ProfilePage = () => {
         setConversations(convoRes.data);
       } catch (err) {
         console.error("Error fetching profile data:", err);
+        toast.error("Failed to load profile data");
       }
     };
 
@@ -43,6 +48,7 @@ const ProfilePage = () => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const data = new FormData();
@@ -57,15 +63,20 @@ const ProfilePage = () => {
       });
 
       await refreshUser();
+      toast.success("Profile updated successfully");
       setEditMode(false);
     } catch (err) {
       console.error("❌ Failed to update profile:", err);
+      toast.error("Failed to update profile");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div>
       <Navbar />
+      <ToastContainer position="top-right" autoClose={3000} />
       <div style={{ maxWidth: "800px", margin: "2rem auto", padding: "1rem" }}>
         <h2>👤 Profile</h2>
 
@@ -73,61 +84,63 @@ const ProfilePage = () => {
         <section style={sectionStyle}>
           <h3>👥 Account Info</h3>
           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <img
-            src={
+            <img
+              src={
                 user.avatar
-                ? user.avatar.startsWith("http") // absolute URL (for future)
+                  ? user.avatar.startsWith("http")
                     ? user.avatar
-                    : `http://localhost:5000${user.avatar}` // relative path from backend
-                : "/default-avatar.jpg"
-            }
-            alt="Avatar"
-            style={{
+                    : `http://localhost:5000${user.avatar}`
+                  : "/default-avatar.jpg"
+              }
+              alt="Avatar"
+              style={{
                 width: "80px",
                 height: "80px",
                 borderRadius: "50%",
                 objectFit: "cover",
-            }}
+              }}
             />
             <div>
-                {!editMode ? (
-                    <>
-                    <p><strong>Username:</strong> {user.username}</p>
-                    <p><strong>Email:</strong> {user.email}</p>
-                    <button onClick={() => setEditMode(true)} style={buttonStyle}>Edit Profile</button>
-                    </>
-                ) : (
-                    <form onSubmit={handleUpdate} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              {!editMode ? (
+                <>
+                  <p><strong>Username:</strong> {user.username}</p>
+                  <p><strong>Email:</strong> {user.email}</p>
+                  <button onClick={() => setEditMode(true)} style={buttonStyle}>Edit Profile</button>
+                </>
+              ) : (
+                <form onSubmit={handleUpdate} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                  <input
+                    type="text"
+                    value={formData.username}
+                    placeholder="Username"
+                    onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                  />
+                  <input
+                    type="email"
+                    value={formData.email}
+                    placeholder="Email"
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  />
+                  <input
+                    type="password"
+                    value={formData.password}
+                    placeholder="New Password (optional)"
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  />
+                  <label>
+                    Upload Avatar:
                     <input
-                        type="text"
-                        value={formData.username}
-                        placeholder="Username"
-                        onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setAvatarFile(e.target.files[0])}
                     />
-                    <input
-                        type="email"
-                        value={formData.email}
-                        placeholder="Email"
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    />
-                    <input
-                        type="password"
-                        value={formData.password}
-                        placeholder="New Password (optional)"
-                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    />
-                    <label>
-                        Upload Avatar:
-                        <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => setAvatarFile(e.target.files[0])}
-                        />
-                    </label>
-                    <button type="submit" style={buttonStyle}>Save Changes</button>
-                    <button type="button" onClick={() => setEditMode(false)} style={cancelButtonStyle}>Cancel</button>
-                    </form>
-                )}
+                  </label>
+                  <button type="submit" style={buttonStyle} disabled={loading}>
+                    {loading ? <Oval height={18} width={18} color="#fff" /> : "Save Changes"}
+                  </button>
+                  <button type="button" onClick={() => setEditMode(false)} style={cancelButtonStyle}>Cancel</button>
+                </form>
+              )}
             </div>
           </div>
         </section>

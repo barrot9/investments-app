@@ -1,18 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import { TailSpin } from "react-loader-spinner";
+import "react-toastify/dist/ReactToastify.css";
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
 
     try {
@@ -22,12 +23,11 @@ const RegisterPage = () => {
         password,
       });
 
-      // ✅ Registration successful — redirect to login
-      navigate("/login");
+      toast.success("🎉 Registration successful! Redirecting...");
+      setTimeout(() => navigate("/login"), 1500);
     } catch (err) {
-      const message =
-        err.response?.data?.message || "Registration failed";
-      setError(message);
+      const message = err.response?.data?.message || "Registration failed";
+      toast.error(`❌ ${message}`);
     } finally {
       setLoading(false);
     }
@@ -35,50 +35,62 @@ const RegisterPage = () => {
 
   return (
     <div style={{ maxWidth: "400px", margin: "auto", padding: "2rem" }}>
+      <ToastContainer position="top-right" autoClose={3000} />
       <h2>Register</h2>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <form onSubmit={handleRegister} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          required
+          onChange={(e) => setUsername(e.target.value)}
+          style={inputStyle}
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          required
+          onChange={(e) => setEmail(e.target.value)}
+          style={inputStyle}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          required
+          onChange={(e) => setPassword(e.target.value)}
+          style={inputStyle}
+        />
 
-      <form onSubmit={handleRegister}>
-        <div style={{ marginBottom: "1rem" }}>
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            required
-            onChange={(e) => setUsername(e.target.value)}
-            style={{ width: "100%", padding: "0.5rem" }}
-          />
-        </div>
-
-        <div style={{ marginBottom: "1rem" }}>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            required
-            onChange={(e) => setEmail(e.target.value)}
-            style={{ width: "100%", padding: "0.5rem" }}
-          />
-        </div>
-
-        <div style={{ marginBottom: "1rem" }}>
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            required
-            onChange={(e) => setPassword(e.target.value)}
-            style={{ width: "100%", padding: "0.5rem" }}
-          />
-        </div>
-
-        <button type="submit" disabled={loading} style={{ padding: "0.5rem 1rem" }}>
-          {loading ? "Registering..." : "Register"}
+        <button
+          type="submit"
+          disabled={loading}
+          style={{
+            padding: "0.75rem",
+            backgroundColor: "#2563eb",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {loading ? <TailSpin height={20} width={20} color="#fff" /> : "Register"}
         </button>
       </form>
     </div>
   );
+};
+
+const inputStyle = {
+  width: "100%",
+  padding: "0.5rem",
+  borderRadius: "4px",
+  border: "1px solid #ccc",
 };
 
 export default RegisterPage;
