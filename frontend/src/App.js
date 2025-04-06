@@ -3,13 +3,16 @@ import { AuthProvider } from "./contexts/AuthContext";
 import AppRoutes from "./AppRoutes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ThemeProvider } from "./contexts/ThemeContext";
 
 function App() {
   return (
     <Router>
-      <AuthProvider> {/* ✅ Now wraps everything including Routes */}
-        <AppRoutes />
-        <ToastContainer position="top-right" autoClose={3000} />
+      <AuthProvider> 
+        <ThemeProvider>
+          <AppRoutes />
+            <ToastContainer position="top-right" autoClose={3000} />
+        </ThemeProvider>
       </AuthProvider>
     </Router>
   );

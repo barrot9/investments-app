@@ -11,3 +11,25 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Dark theme root styles */
+body.dark {
+  background-color: #111827;
+  color: #e5e7eb;
+}
+
+body.dark a {
+  color: #93c5fd;
+}
+
+body.dark .navbar,
+body.dark .footer {
+  background-color: #000000;
+  color: white;
+}
+
+body.dark .card,
+body.dark .content-wrap {
+  background-color: #1f2937;
+  color: #e5e7eb;
+}
