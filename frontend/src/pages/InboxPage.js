@@ -2,11 +2,9 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Oval } from "react-loader-spinner";
-import Footer from "../components/Footer";
 
 const InboxPage = () => {
   useContext(AuthContext);
@@ -34,10 +32,8 @@ const InboxPage = () => {
   }, []);
 
   return (
-    <div>
-      <Navbar />
+    <>
       <ToastContainer position="top-right" autoClose={3000} />
-
       <div style={{ maxWidth: "600px", margin: "2rem auto" }}>
         <h2>💬 My Inbox</h2>
 
@@ -90,8 +86,7 @@ const InboxPage = () => {
           })
         )}
       </div>
-      <Footer />
-    </div>
+    </>
   );
 };
 

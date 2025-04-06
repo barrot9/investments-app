@@ -1,10 +1,8 @@
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import Navbar from "../components/Navbar";
 import { TailSpin } from "react-loader-spinner";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Footer from "../components/Footer";
 
 const DashboardPage = () => {
   const { user, loading } = useContext(AuthContext);
@@ -18,10 +16,8 @@ const DashboardPage = () => {
   }
 
   return (
-    <div>
-      <Navbar />
+    <>
       <ToastContainer position="top-right" autoClose={3000} />
-
       <div style={{ maxWidth: "600px", margin: "2rem auto", padding: "1rem" }}>
         <h2>📊 Dashboard</h2>
         <div style={cardStyle}>
@@ -30,8 +26,7 @@ const DashboardPage = () => {
           <p><strong>User ID:</strong> {user.id}</p>
         </div>
       </div>
-      <Footer />
-    </div>
+    </>
   );
 };
 

@@ -1,12 +1,10 @@
 import { useState, useEffect, useContext, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Navbar from "../components/Navbar";
 import { AuthContext } from "../contexts/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { TailSpin } from "react-loader-spinner";
-import Footer from "../components/Footer";
 
 const MessagesPage = () => {
   const { user } = useContext(AuthContext);
@@ -19,7 +17,6 @@ const MessagesPage = () => {
   const [sending, setSending] = useState(false);
 
   const messagesEndRef = useRef(null);
-
   const defaultAvatar = "/default-avatar.jpg";
 
   const scrollToBottom = () => {
@@ -59,7 +56,6 @@ const MessagesPage = () => {
   const handleSend = async (e) => {
     e.preventDefault();
     if (!content.trim()) return;
-
     setSending(true);
 
     try {
@@ -85,8 +81,7 @@ const MessagesPage = () => {
   };
 
   return (
-    <div>
-      <Navbar />
+    <>
       <ToastContainer position="top-right" autoClose={3000} />
       <div style={{ maxWidth: "600px", margin: "2rem auto" }}>
         <h2>Conversation with {recipient?.username || "User"}</h2>
@@ -154,9 +149,7 @@ const MessagesPage = () => {
                         {name}
                       </div>
                       <div>{msg.content}</div>
-                      <div
-                        style={{ fontSize: "0.7rem", color: "#555", marginTop: "0.25rem" }}
-                      >
+                      <div style={{ fontSize: "0.7rem", color: "#555", marginTop: "0.25rem" }}>
                         {new Date(msg.created_at).toLocaleTimeString()}
                       </div>
                     </div>
@@ -207,8 +200,7 @@ const MessagesPage = () => {
           </>
         )}
       </div>
-      <Footer />
-    </div>
+    </>
   );
 };
 

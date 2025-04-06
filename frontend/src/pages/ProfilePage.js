@@ -1,12 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import Navbar from "../components/Navbar";
 import { AuthContext } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Oval } from "react-loader-spinner";
-import Footer from "../components/Footer";
 
 const ProfilePage = () => {
   const { user, refreshUser } = useContext(AuthContext);
@@ -75,8 +73,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <div>
-      <Navbar />
+    <>
       <ToastContainer position="top-right" autoClose={3000} />
       <div style={{ maxWidth: "800px", margin: "2rem auto", padding: "1rem" }}>
         <h2>👤 Profile</h2>
@@ -182,8 +179,7 @@ const ProfilePage = () => {
           )}
         </section>
       </div>
-      <Footer />
-    </div>
+    </>
   );
 };
 

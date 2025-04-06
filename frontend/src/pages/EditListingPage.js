@@ -1,12 +1,10 @@
 import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Navbar from "../components/Navbar";
 import { AuthContext } from "../contexts/AuthContext";
 import { toast, ToastContainer } from "react-toastify";
 import { TailSpin } from "react-loader-spinner";
 import "react-toastify/dist/ReactToastify.css";
-import Footer from "../components/Footer";
 
 const EditListingPage = () => {
   const { id } = useParams();
@@ -65,7 +63,6 @@ const EditListingPage = () => {
 
   return (
     <div>
-      <Navbar />
       <ToastContainer position="top-right" autoClose={3000} />
 
       <div style={{ maxWidth: "600px", margin: "2rem auto", padding: "1rem" }}>
@@ -128,7 +125,6 @@ const EditListingPage = () => {
           <p>Listing not found</p>
         )}
       </div>
-      <Footer />
     </div>
   );
 };
